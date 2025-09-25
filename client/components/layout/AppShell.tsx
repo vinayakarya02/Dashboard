@@ -33,7 +33,10 @@ import {
   Search,
 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+
 import { cn } from "@/lib/utils";
+import { useGlobalSearch } from "@/hooks/use-global-search";
 
 function useThemeToggle() {
   const [isDark, setIsDark] = useState<boolean>(false);
@@ -59,6 +62,7 @@ function useThemeToggle() {
 
 export default function AppShell({ children }: { children: ReactNode }) {
   const { isDark, toggle } = useThemeToggle();
+  const { query, setQuery } = useGlobalSearch();
 
   return (
     <SidebarProvider>
@@ -73,7 +77,12 @@ export default function AppShell({ children }: { children: ReactNode }) {
           </div>
           <SidebarSeparator />
           <div className="px-2">
-            <Input placeholder="Search" className="h-8" />
+            <Input
+              placeholder="Search"
+              className="h-8"
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+            />
           </div>
         </SidebarHeader>
         <SidebarContent>
@@ -134,7 +143,12 @@ export default function AppShell({ children }: { children: ReactNode }) {
             <Separator orientation="vertical" className="h-6" />
             <div className="flex-1 flex items-center gap-3">
               <div className="relative w-full max-w-sm">
-                <Input className="pl-9 h-9" placeholder="Search metrics, users, orders..." />
+                <Input
+                  className="pl-9 h-9"
+                  placeholder="Search metrics, users, orders..."
+                  value={query}
+                  onChange={e => setQuery(e.target.value)}
+                />
                 <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               </div>
               <div className="ml-auto flex items-center gap-2">
